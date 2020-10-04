@@ -2,6 +2,8 @@ import csv
 import flask
 from flask import Flask, request, redirect
 import cgi
+from datetime import datetime
+
 app = flask.Flask("Reporting Tool")
 
 def get_html(page_name):
@@ -13,12 +15,13 @@ def get_html(page_name):
 # creation of the Shop class
 class Shop:
     def __init__ (self, client, lg_oled, sony_oled):
+        self.datetime = datetime.now().strftime('%d.%m.%y %H:%M:%S')
         self.client = client
         self.lg_oled = lg_oled
         self.sony_oled = sony_oled
     # Convert object as dict to add it to the csv
     def add_new_line_to_csv(self):
-            fields_name = ['client','lg_oled','sony_oled']
+            fields_name = ['datetime', 'client','lg_oled','sony_oled']
             list = self.__dict__
             with open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\database.csv', 'a', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fields_name)
