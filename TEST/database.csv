@@ -1,8 +1,2 @@
-client, TV A, TV B
-Client 1, 10, 15
-Client 2, 5, 13
-Client 3, 4,5
-client 4,11,123
-client 5,11,123
-blabla,5,1000
-blabla,5,1000
+Clients, TV A, TV B
+blabla,11,11
