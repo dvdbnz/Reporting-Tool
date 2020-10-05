@@ -10,11 +10,17 @@
 <!-- Creation of a dummy survey, to check everything is working before creating the full survey -->
     <form method='POST'>
         <label for="client">Client's name: </label>
-        <input type="text" name="client">
+        <select name="client">
+            $$$OPTIONS$$$
+        </select>
+
         <label for="lg-oled">LG OLED Tvs: </label>
         <input type="number" name="lg-oled" min="0" max="50">
+
         <label for="sony-oled">SONY OLED Tvs: </label>
         <input type="number" name="sony-oled" min="0" max="50">
+
+
         <input type="submit" value="Submit!">
     </form>  
 </body>

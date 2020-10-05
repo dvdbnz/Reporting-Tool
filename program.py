@@ -1,6 +1,6 @@
 import csv
 import flask
-from flask import Flask, request, redirect
+from flask import request, redirect
 import cgi
 from datetime import datetime
 
@@ -29,6 +29,15 @@ class Shop:
             print(list)
 
 
+# Function to get the clients database as Array
+# The aim is to have a dynamic HTML for a dropdown selection for each clients from the database
+def read_clients_db():
+    document = open("clientsdb.csv")
+    content = document.read()
+    document.close()
+    clients_array = content.split('\n')
+    return clients_array
+
 @app.route("/")
 def homepage():
     page = get_html("index")
@@ -37,8 +46,15 @@ def homepage():
 @app.route('/survey')
 def survey():
     page = get_html('survey')
-    return page
+    clients_array = read_clients_db()
 
+    # Format a HTML dropdown selection for each clients from the database
+    result = ''
+    for client in clients_array:
+        result += '<option value="' + client + '">'+client+'</option>'
+    dynamic_html = page.replace("$$$OPTIONS$$$", result)
+
+    return dynamic_html
 
 #When the user clicks on submit the data from the survey, it gets the values from the survey.html
 #Then uses them as arguments to create an object. Then append the object as Dict in the Csv
@@ -51,4 +67,8 @@ def my_form_post():
     NewClient = Shop(client,lg_oled,sony_oled)
     NewClient.add_new_line_to_csv()
     return redirect('/')
-    
+
+
+# TODO faire un bouton pour ajouter un client à la base de donnée.
+# TODO survey
+# TODO JS pour localuser
