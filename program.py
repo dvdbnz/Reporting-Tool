@@ -1,16 +1,24 @@
 import csv
 import flask
 from flask import request, redirect
-import cgi
 from datetime import datetime
 
 app = flask.Flask("Reporting Tool")
 
+# Get the HTML content
 def get_html(page_name):
     html_file = open(page_name + ".html")
     content = html_file.read()
     html_file.close()
     return content
+
+#function to get database as array
+def database_as_array():
+    database = open("database.csv")
+    survey = database.read()
+    database.close()
+    survey = survey.split("\n")
+    return survey
 
 # creation of the Shop class
 class Shop:
@@ -31,6 +39,7 @@ class Shop:
 
 # Function to get the clients database as Array
 # The aim is to have a dynamic HTML for a dropdown selection for each clients from the database
+# Used in @app.route("/survey")
 def read_clients_db():
     document = open("clientsdb.csv")
     content = document.read()
@@ -38,9 +47,23 @@ def read_clients_db():
     clients_array = content.split('\n')
     return clients_array
 
+
+
+                                                        # SERVER
+
 @app.route("/")
 def homepage():
     page = get_html("index")
+
+    # to have the list of the surveys
+    list_of_surveys = database_as_array()
+    list_of_surveys.pop(0) #remove headers
+    list_of_surveys.pop() #remove last empty line
+    surveys = ''
+    for survey in list_of_surveys:
+        surveys += '<li>'+survey+'</li>'
+    page = page.replace('$$$ALLSURVEYS$$$',surveys)
+
     return page
 
 @app.route('/survey')
@@ -50,6 +73,7 @@ def survey():
 
     # Format a HTML dropdown selection for each clients from the database
     result = ''
+    clients_array.pop()
     for client in clients_array:
         result += '<option value="' + client + '">'+client+'</option>'
     dynamic_html = page.replace("$$$OPTIONS$$$", result)
@@ -60,7 +84,7 @@ def survey():
 #Then uses them as arguments to create an object. Then append the object as Dict in the Csv
 # Then redirect to the homepage
 @app.route('/survey', methods=['POST'])
-def my_form_post():
+def survey_request():
     client = request.form['client']
     lg_oled = request.form['lg-oled']
     sony_oled = request.form['sony-oled']
@@ -71,4 +95,4 @@ def my_form_post():
 
 # TODO faire un bouton pour ajouter un client à la base de donnée.
 # TODO survey
-# TODO JS pour localuser
+# TODO JS pour localStorage
