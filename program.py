@@ -60,8 +60,12 @@ def homepage():
     list_of_surveys.pop(0) #remove headers
     list_of_surveys.pop() #remove last empty line
     surveys = ''
-    for survey in list_of_surveys:
-        surveys += '<li>'+survey+'</li>'
+    print(len(list_of_surveys))
+    if len(list_of_surveys) == 0:
+        surveys += "There's nothing here!"
+    else:
+        for survey in list_of_surveys:
+            surveys += '<li>'+survey+'</li>'
     page = page.replace('$$$ALLSURVEYS$$$',surveys)
 
     return page
@@ -92,7 +96,8 @@ def survey_request():
     NewClient.add_new_line_to_csv()
     return redirect('/')
 
-
+# TODO add somewhere something to check the CSV exists with the right header, otherwise create it
 # TODO faire un bouton pour ajouter un client à la base de donnée.
 # TODO survey
 # TODO JS pour localStorage
+# TODO CSS
