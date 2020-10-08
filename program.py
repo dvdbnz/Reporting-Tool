@@ -44,8 +44,8 @@ def read_clients_db():
     document = open("clientsdb.csv")
     content = document.read()
     document.close()
-    clients_array = content.split('\n')
-    return clients_array
+    # clients_array = content.split('\n')
+    return content
 
 
 
@@ -55,7 +55,7 @@ def read_clients_db():
 def homepage():
     page = get_html("index")
 
-    # to have the list of the surveys
+    # to have the list of the surveys TODO find a way to display CSV in html
     list_of_surveys = database_as_array()
     list_of_surveys.pop(0) #remove headers
     list_of_surveys.pop() #remove last empty line
@@ -73,7 +73,8 @@ def homepage():
 @app.route('/survey')
 def survey():
     page = get_html('survey')
-    clients_array = read_clients_db()
+    clients = read_clients_db()
+    clients_array = clients.split('\n')
 
     # Format a HTML dropdown selection for each clients from the database
     result = ''
@@ -94,6 +95,25 @@ def survey_request():
     sony_oled = request.form['sony-oled']
     NewClient = Shop(client,lg_oled,sony_oled)
     NewClient.add_new_line_to_csv()
+    return redirect('/')
+
+@app.route('/clients')
+def clients_page():
+    page = get_html('clients')
+    return page
+
+
+@app.route('/clients', methods=['POST'])
+def clients_remove():
+    client_to_remove = request.form['client-to-remove']
+    clients = read_clients_db()
+    new_clients_database = clients.replace('\n'+ client_to_remove,'')
+    new_clients_database = new_clients_database.split('\n')
+    new_clients_database.sort
+    writer = csv.writer(open ('clientsdb.csv', 'w'), delimiter=',', lineterminator='\n')
+    for line in new_clients_database :
+        writer.writerow ([line])
+        # PROBLEM, NEW EMPTY LINE IS ALWAYS CREATED
     return redirect('/')
 
 # TODO add somewhere something to check the CSV exists with the right header, otherwise create it
