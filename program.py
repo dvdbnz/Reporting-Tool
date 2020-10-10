@@ -46,7 +46,7 @@ def read_clients_db():
     document = open("clientsdb.csv")
     content = document.read()
     document.close()
-    # clients_array = content.split('\n')
+    content = content.split('\n')
     return content
 
 
@@ -89,7 +89,7 @@ def homepage():
                 if col_count == 2:
                     surveys += '<tr><td>' + value + '</td>'
                 if col_count == 3: #button to remove a survey
-                    surveys += '<td>' + value + ' <button type="submit" name="client-to-remove" value="' +survey_id + '">''</button></td>'
+                    surveys += '<td>' + value + ' <button type="submit" name="survey-to-remove" value="' + survey_id + '">Remove</button></td>'
                 if col_count == len(column):
                     surveys += '<td>'+ value + '</td></tr>'
                 if 3 < col_count < len(column):
@@ -100,11 +100,31 @@ def homepage():
     page = page.replace('$$$ALLSURVEYS$$$',surveys)
     return page
 
+# Delete the survey from the database when user clicks on the remove button
+# next to the client's name
+@app.route('/', methods=['POST'])
+def survey_remove():
+    survey_to_remove = request.form['survey-to-remove']
+    surveys = database_as_array()
+    result = ''
+    for line in surveys:
+            if line.find(survey_to_remove) != 0:
+                    result +=(line + '\n')
+    result = result.split('\n')
+    result.pop()
+    print(result)
+    file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\database.csv', 'w')
+    i=0
+    while i < (len(result)-1):
+            file.write(result[i] + '\n')
+            i += 1
+    file.close()
+    return redirect ('/')
+
 @app.route('/survey')
 def survey():
     page = get_html('survey')
-    clients = read_clients_db()
-    clients_array = clients.split('\n')
+    clients_array = read_clients_db()
 
     # Format a HTML dropdown selection for each clients from the database
     result = ''
@@ -127,24 +147,48 @@ def survey_request():
     NewClient.add_new_line_to_csv()
     return redirect('/')
 
+# Page with all the clients from the clientsdb.csv
+# a button is created for each client to delete the client
 @app.route('/clients')
 def clients_page():
     page = get_html('clients')
-    return page
+    clients_array = read_clients_db()
+    result=''
+    if clients_array[-1] =='':
+        clients_array.pop()
+    for client in clients_array:
+        result += '<li>'+ client + ' <button type="submit" value="' + client+'" name="client-to-remove">Remove</button></li>'
+    dynamic_html = page.replace("$$$CLIENTS$$$", result)
+    return dynamic_html
 
-
+# delete the desired client from the database after button click
 @app.route('/clients', methods=['POST'])
 def clients_remove():
     client_to_remove = request.form['client-to-remove']
     clients = read_clients_db()
-    new_clients_database = clients.replace('\n'+ client_to_remove,'')
-    new_clients_database = new_clients_database.split('\n')
-    new_clients_database.sort
-    writer = csv.writer(open ('clientsdb.csv', 'w'), delimiter=',', lineterminator='\n')
-    for line in new_clients_database :
-        writer.writerow ([line])
-        # PROBLEM, NEW EMPTY LINE IS ALWAYS CREATED
-    return redirect('/')
+    result = ''
+    for client in clients:
+        if client.find(client_to_remove) != 0:
+            result +=(client + '\n')
+    result = result.split('\n')
+    result.pop()
+    print(result)
+    file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\clientsdb.csv', 'w')
+    i=0
+    while i < (len(result)-1):
+            file.write(result[i] + '\n')
+            i += 1
+    file.close()
+    return redirect ('/clients')
+
+    # new_clients_database = clients.replace('\n'+ client_to_remove,'')
+    # new_clients_database = new_clients_database.split('\n')
+    # new_clients_database.sort
+    # writer = csv.writer(open ('clientsdb.csv', 'w'), delimiter=',', lineterminator='\n')
+    # for line in new_clients_database :
+    #     writer.writerow ([line])
+    #     # PROBLEM, NEW EMPTY LINE IS ALWAYS CREATED
+    # return redirect('/clients')
 
 # TODO add somewhere something to check the CSV exists with the right header, otherwise create it
 # TODO faire un bouton pour ajouter un client à la base de donnée.
