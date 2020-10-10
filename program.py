@@ -27,14 +27,16 @@ class Shop:
         self.client = client
         self.lg_oled = lg_oled
         self.sony_oled = sony_oled
+        self.id = str(self.datetime) + '_' + client
     # Convert object as dict to add it to the csv
     def add_new_line_to_csv(self):
-            fields_name = ['datetime', 'client','lg_oled','sony_oled']
+            fields_name = ['id', 'datetime', 'client','lg_oled','sony_oled']
             list = self.__dict__
             with open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\database.csv', 'a', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fields_name)
                     writer.writerow(list)
-            print(list)
+    # @staticmethod
+    # def delete_from_CSV():
 
 
 # Function to get the clients database as Array
@@ -55,19 +57,47 @@ def read_clients_db():
 def homepage():
     page = get_html("index")
 
-    # to have the list of the surveys TODO find a way to display CSV in html
+    # To display the list of all the surveys in a table 
     list_of_surveys = database_as_array()
-    list_of_surveys.pop(0) #remove headers
-    list_of_surveys.pop() #remove last empty line
+    if list_of_surveys[-1] =='': #Check if the last line is empty, and if yes, pop last value
+        list_of_surveys.pop()
     surveys = ''
-    print(len(list_of_surveys))
-    if len(list_of_surveys) == 0:
-        surveys += "There's nothing here!"
-    else:
-        for survey in list_of_surveys:
-            surveys += '<li>'+survey+'</li>'
-    page = page.replace('$$$ALLSURVEYS$$$',surveys)
+    line_count=1
 
+    # Parse CSV to create HTML as a table
+    for line in list_of_surveys:
+        # If it is the header
+        if line_count == 1:
+            column = line.split(',')
+            col_count=1
+            for value in column:
+                if col_count == 2:
+                    surveys += '<tr><th>'+value+'</th>'
+                if col_count == len(column):
+                    surveys += '<th>'+value+'</th></tr>'
+                if 2 < col_count < len(column):
+                    surveys += '<th>'+value+'</th>'
+                col_count += 1  
+        # For other lines of the csv
+        else:
+            column = line.split(',')
+            col_count = 1
+            survey_id=''
+            for value in column:
+                if col_count == 1:
+                    survey_id = str(value)
+                if col_count == 2:
+                    surveys += '<tr><td>' + value + '</td>'
+                if col_count == 3: #button to remove a survey
+                    surveys += '<td>' + value + ' <button type="submit" name="client-to-remove" value="' +survey_id + '">''</button></td>'
+                if col_count == len(column):
+                    surveys += '<td>'+ value + '</td></tr>'
+                if 3 < col_count < len(column):
+                    surveys += '<td>' + value+ '</td>'
+                col_count +=1
+        line_count +=1
+
+    page = page.replace('$$$ALLSURVEYS$$$',surveys)
     return page
 
 @app.route('/survey')

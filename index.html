@@ -6,6 +6,17 @@
     <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
+  <style>
+    table{
+    border:1px solid black;
+  }
+  th{
+    border:2px solid black;
+  }
+  td{
+    border:1px solid black;
+  }
+  </style>
 
     <div class="topnav">
         <a class="active" href="/">Home</a>
@@ -16,7 +27,8 @@
     <a href="/survey">Add a new survey</a>
 
     <div id="survey-listing">
-      <ul>$$$ALLSURVEYS$$$</ul>
+
+      <table><form method='POST'>$$$ALLSURVEYS$$$</form></table>
     </div>
 
 </body>
