@@ -170,11 +170,9 @@ def clients_management_page():
     if 'client-to-add' in request.form:
         client_to_add = request.form['client-to-add']
         clients = read_clients_db()
-        print(clients)
         if clients[-1] =='':
             clients.pop()
         clients.append(client_to_add)
-        print(clients)
         clients.sort()
         file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\clientsdb.csv', 'w')
         i=0
@@ -182,36 +180,23 @@ def clients_management_page():
                 file.write(clients[i] + '\n')
                 i += 1
         file.close()
-    # TO remove a client from the database
+    # To remove a client from the database
     elif 'client-to-remove' in request.form:
         client_to_remove = request.form['client-to-remove']
         clients = read_clients_db()
-        result = ''
-        for client in clients:
-            if client.find(client_to_remove) != 0:
-                result +=(client + '\n')
-        result = result.split('\n')
-        result.pop()
-        print(result)
+        if clients[-1] =='':
+            clients.pop()
+        clients.pop((clients.index(client_to_remove)))
+        print(clients)
         file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\clientsdb.csv', 'w')
         i=0
-        while i < (len(result)-1):
-                file.write(result[i] + '\n')
+        while i < (len(clients)):
+                file.write(clients[i] + '\n')
                 i += 1
         file.close()
     return redirect ('/clients')
 
-    # new_clients_database = clients.replace('\n'+ client_to_remove,'')
-    # new_clients_database = new_clients_database.split('\n')
-    # new_clients_database.sort
-    # writer = csv.writer(open ('clientsdb.csv', 'w'), delimiter=',', lineterminator='\n')
-    # for line in new_clients_database :
-    #     writer.writerow ([line])
-    #     # PROBLEM, NEW EMPTY LINE IS ALWAYS CREATED
-    # return redirect('/clients')
-
 # TODO add somewhere something to check the CSV exists with the right header, otherwise create it
-# TODO faire un bouton pour ajouter un client à la base de donnée.
 # TODO survey
 # TODO JS pour localStorage
 # TODO CSS
