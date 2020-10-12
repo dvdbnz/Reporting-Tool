@@ -53,6 +53,14 @@ class Shop:
                     i += 1
             file.close()
 
+# Function to write the clients array in the clientsdb.csv
+def write_client_array_to_db(clients_array):
+        file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\clientsdb.csv', 'w')
+        i=0
+        while i < (len(clients_array)):
+                file.write(clients_array[i] + '\n')
+                i += 1
+        file.close()
 
 # Function to get the clients database as Array
 # The aim is to have a dynamic HTML for a dropdown selection for each clients from the database
@@ -166,7 +174,7 @@ def clients_page():
 # delete the desired client from the database after button click, or add a client
 @app.route('/clients', methods=['POST'])
 def clients_management_page():
-    # To add a client to the database
+        # To add a client to the database
     if 'client-to-add' in request.form:
         client_to_add = request.form['client-to-add']
         clients = read_clients_db()
@@ -174,12 +182,8 @@ def clients_management_page():
             clients.pop()
         clients.append(client_to_add)
         clients.sort()
-        file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\clientsdb.csv', 'w')
-        i=0
-        while i < (len(clients)):
-                file.write(clients[i] + '\n')
-                i += 1
-        file.close()
+        write_client_array_to_db(clients)
+
     # To remove a client from the database
     elif 'client-to-remove' in request.form:
         client_to_remove = request.form['client-to-remove']
@@ -188,12 +192,8 @@ def clients_management_page():
             clients.pop()
         clients.pop((clients.index(client_to_remove)))
         print(clients)
-        file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\clientsdb.csv', 'w')
-        i=0
-        while i < (len(clients)):
-                file.write(clients[i] + '\n')
-                i += 1
-        file.close()
+        write_client_array_to_db(clients)
+
     return redirect ('/clients')
 
 # TODO add somewhere something to check the CSV exists with the right header, otherwise create it
