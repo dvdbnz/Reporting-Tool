@@ -35,8 +35,23 @@ class Shop:
             with open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\database.csv', 'a', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fields_name)
                     writer.writerow(list)
-    # @staticmethod
-    # def delete_from_CSV():
+    # Delete the survey from the CSV when user clicks on button next to the survey in Homepage
+    @staticmethod
+    def delete_from_CSV(survey_to_remove):
+            surveys = database_as_array()
+            result = ''
+            for line in surveys:
+                    if line.find(survey_to_remove) != 0:
+                            result +=(line + '\n')
+            result = result.split('\n')
+            result.pop()
+            print(result)
+            file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\database.csv', 'w')
+            i=0
+            while i < (len(result)-1):
+                    file.write(result[i] + '\n')
+                    i += 1
+            file.close()
 
 
 # Function to get the clients database as Array
@@ -105,20 +120,7 @@ def homepage():
 @app.route('/', methods=['POST'])
 def survey_remove():
     survey_to_remove = request.form['survey-to-remove']
-    surveys = database_as_array()
-    result = ''
-    for line in surveys:
-            if line.find(survey_to_remove) != 0:
-                    result +=(line + '\n')
-    result = result.split('\n')
-    result.pop()
-    print(result)
-    file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\database.csv', 'w')
-    i=0
-    while i < (len(result)-1):
-            file.write(result[i] + '\n')
-            i += 1
-    file.close()
+    Shop.delete_from_CSV(survey_to_remove)
     return redirect ('/')
 
 @app.route('/survey')
