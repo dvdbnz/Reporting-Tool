@@ -161,24 +161,42 @@ def clients_page():
     dynamic_html = page.replace("$$$CLIENTS$$$", result)
     return dynamic_html
 
-# delete the desired client from the database after button click
+# delete the desired client from the database after button click, or add a client
 @app.route('/clients', methods=['POST'])
-def clients_remove():
-    client_to_remove = request.form['client-to-remove']
-    clients = read_clients_db()
-    result = ''
-    for client in clients:
-        if client.find(client_to_remove) != 0:
-            result +=(client + '\n')
-    result = result.split('\n')
-    result.pop()
-    print(result)
-    file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\clientsdb.csv', 'w')
-    i=0
-    while i < (len(result)-1):
-            file.write(result[i] + '\n')
-            i += 1
-    file.close()
+def clients_management_page():
+    # To add a client to the database
+    if 'client-to-add' in request.form:
+        client_to_add = request.form['client-to-add']
+        clients = read_clients_db()
+        print(clients)
+        if clients[-1] =='':
+            clients.pop()
+        clients.append(client_to_add)
+        print(clients)
+        clients.sort()
+        file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\clientsdb.csv', 'w')
+        i=0
+        while i < (len(clients)):
+                file.write(clients[i] + '\n')
+                i += 1
+        file.close()
+    # TO remove a client from the database
+    elif 'client-to-remove' in request.form:
+        client_to_remove = request.form['client-to-remove']
+        clients = read_clients_db()
+        result = ''
+        for client in clients:
+            if client.find(client_to_remove) != 0:
+                result +=(client + '\n')
+        result = result.split('\n')
+        result.pop()
+        print(result)
+        file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\clientsdb.csv', 'w')
+        i=0
+        while i < (len(result)-1):
+                file.write(result[i] + '\n')
+                i += 1
+        file.close()
     return redirect ('/clients')
 
     # new_clients_database = clients.replace('\n'+ client_to_remove,'')
