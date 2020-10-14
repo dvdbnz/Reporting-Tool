@@ -45,7 +45,6 @@ class Shop:
                             result +=(line + '\n')
             result = result.split('\n')
             result.pop()
-            print(result)
             file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\database.csv', 'w')
             i=0
             while i < (len(result)-1):
@@ -191,7 +190,6 @@ def clients_management_page():
         if clients[-1] =='':
             clients.pop()
         clients.pop((clients.index(client_to_remove)))
-        print(clients)
         write_client_array_to_db(clients)
 
     return redirect ('/clients')
