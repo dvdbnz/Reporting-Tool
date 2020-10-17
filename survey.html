@@ -13,35 +13,37 @@
         <a class="" href="/clients">Clients</a>
     </div>
 
-    <h2>You can add a new survey here. Please collect the information asked under</h2> <br>
+    <div id="survey">
+        <h2>You can add a new survey here.</h2>
+        <h3>Please provide the informations here under</h3> <br>
 
-<!-- Creation of a dummy survey, to check everything is working before creating the full survey -->
-    <form method='POST'>
-        <label for="client">Client's name: </label>
-        <select name="client">
-            $$$OPTIONS$$$
-        </select>
+        <form method='POST'>
+            <label for="client">Client's name: </label>
+            <select name="client">
+                $$$OPTIONS$$$
+            </select>
 
-        <label for="lg-oled">LG OLED Tvs: </label>
-        <input type="number" name="lg-oled" min="0" max="50">
+            <label for="lg-oled">LG OLED Tvs: </label>
+            <input type="number" name="lg-oled" value = 0 min="0" max="50">
 
-        <label for="lg-UHD">LG UHD Tvs: </label>
-        <input type="number" name="lg-uhd" min="0" max="50">
+            <label for="lg-UHD">LG UHD Tvs: </label>
+            <input type="number" name="lg-uhd" value = 0 min="0" max="50">
 
-        <label for="Samsung-qled">Samsung Qled Tvs: </label>
-        <input type="number" name="ss-qled" min="0" max="50">
+            <label for="Samsung-qled">Samsung Qled Tvs: </label>
+            <input type="number" name="ss-qled" value = 0 min="0" max="50">
 
-        <label for="Samsung-uhd">Samsung UHD Tvs: </label>
-        <input type="number" name="ss-uhd" min="0" max="50">
-        
-        <label for="sony-oled">SONY OLED Tvs: </label>
-        <input type="number" name="sony-oled" min="0" max="50">
+            <label for="Samsung-uhd">Samsung UHD Tvs: </label>
+            <input type="number" name="ss-uhd" value = 0 min="0" max="50">
+            
+            <label for="sony-oled">SONY OLED Tvs: </label>
+            <input type="number" name="sony-oled" value = 0 min="0" max="50">
 
-        <label for="sony-uhd">SONY UHD Tvs: </label>
-        <input type="number" name="sony-uhd" min="0" max="50">
+            <label for="sony-uhd">SONY UHD Tvs: </label>
+            <input type="number" name="sony-uhd" value = 0 min="0" max="50">
 
 
-        <input type="submit" value="Submit!">
-    </form>  
+            <input type="submit" value="Submit!">
+        </form>
+    </div>
 </body>
 </html>

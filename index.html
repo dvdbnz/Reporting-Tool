@@ -8,11 +8,14 @@
 <body>
   <style>
     table{
-    border:1px solid black;
+  border:1px solid black;
+  background-color: rgba(194, 194, 194, 0.205);
   }
+
   th{
     border:2px solid black;
   }
+  
   td{
     border:1px solid black;
   }
@@ -23,19 +26,20 @@
         <a class="" href="/survey">Add a new survey</a>
         <a class="" href="/clients">Clients</a>
     </div>
+    <div id="home">
+      <div id="javascript-header">
+        
+      </div>
+      <h3>Here is the list of the surveys:</h3>
+      <div id="survey-listing">
+        <form method='POST'>
+          <table>
 
-    <div id="javascript-header">
-      
-    </div>
-    <h3>Here is the list of the surveys:</h3>
-    <div id="survey-listing">
-      <form method='POST'>
-        <table>
+            $$$ALLSURVEYS$$$
 
-          $$$ALLSURVEYS$$$
-
-        </table>
-      </form>
+          </table>
+        </form>
+      </div>
     </div>
   <script src="static/script.js"></script>
 </body>

@@ -98,11 +98,11 @@ def homepage():
             col_count=1
             for value in column:
                 if col_count == 2:
-                    surveys += '<tr><th>'+value+'</th>'
+                    surveys += '<tr><th class="header">'+value+'</th>'
                 if col_count == len(column):
-                    surveys += '<th>'+value+'</th></tr>'
+                    surveys += '<th class="header">'+value+'</th></tr>'
                 if 2 < col_count < len(column):
-                    surveys += '<th>'+value+'</th>'
+                    surveys += '<th class="header">'+value+'</th>'
                 col_count += 1  
         # For other lines of the csv
         else:
