@@ -22,17 +22,21 @@ def database_as_array():
 
 # creation of the Shop class
 class Shop:
-    def __init__ (self, client, lg_oled, sony_oled):
+    def __init__ (self, client, lg_oled, lg_uhd, ss_qled, ss_uhd, sony_oled, sony_uhd):
         self.datetime = datetime.now().strftime('%d.%m.%y %H:%M:%S')
         self.client = client
         self.lg_oled = lg_oled
+        self.lg_uhd = lg_uhd
+        self.ss_qled = ss_qled
+        self.ss_uhd = ss_uhd
         self.sony_oled = sony_oled
+        self.sony_uhd = sony_uhd
         self.id = str(self.datetime) + '_' + client
     # Convert object as dict to add it to the csv
     def add_new_line_to_csv(self):
-            fields_name = ['id', 'datetime', 'client','lg_oled','sony_oled']
+            fields_name = ['id', 'datetime', 'client','lg_oled', 'lg_uhd', 'ss_qled', 'ss_uhd', 'sony_oled', 'sony_uhd']
             list = self.__dict__
-            with open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\database.csv', 'a', newline='') as file:
+            with open('database.csv', 'a', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fields_name)
                     writer.writerow(list)
     # Delete the survey from the CSV when user clicks on button next to the survey in Homepage
@@ -45,7 +49,7 @@ class Shop:
                             result +=(line + '\n')
             result = result.split('\n')
             result.pop()
-            file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\database.csv', 'w')
+            file = open('database.csv', 'w')
             i=0
             while i < (len(result)-1):
                     file.write(result[i] + '\n')
@@ -54,7 +58,7 @@ class Shop:
 
 # Function to write the clients array in the clientsdb.csv
 def write_client_array_to_db(clients_array):
-        file = open(r'C:\Users\davbu\OneDrive\Dokumente\Learning\TCC\Final Project\clientsdb.csv', 'w')
+        file = open('clientsdb.csv', 'w')
         i=0
         while i < (len(clients_array)):
                 file.write(clients_array[i] + '\n')
@@ -151,8 +155,12 @@ def survey():
 def survey_request():
     client = request.form['client']
     lg_oled = request.form['lg-oled']
+    lg_uhd = request.form['lg-uhd']
+    ss_qled = request.form['ss-qled']
+    ss_uhd = request.form['ss-uhd']
     sony_oled = request.form['sony-oled']
-    NewClient = Shop(client,lg_oled,sony_oled)
+    sony_uhd = request.form['sony-uhd']
+    NewClient = Shop(client,lg_oled,lg_uhd, ss_qled, ss_uhd, sony_oled, sony_uhd)
     NewClient.add_new_line_to_csv()
     return redirect('/')
 
@@ -193,8 +201,3 @@ def clients_management_page():
         write_client_array_to_db(clients)
 
     return redirect ('/clients')
-
-# TODO add somewhere something to check the CSV exists with the right header, otherwise create it
-# TODO survey
-# TODO JS pour localStorage
-# TODO CSS

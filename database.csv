@@ -1,3 +1,3 @@
-ID, DateTime, Client, TV A, TV B
-14.10.20 11:50:41_Client 2,14.10.20 11:50:41,Client 2,12,12
-14.10.20 11:50:46_Client 4,14.10.20 11:50:46,Client 4,23,23
+ID, DateTime, Client, LG OLED, LG UHD, SS OLED, SS UHD, Sony OLED, Sony UHD
+17.10.20 12:42:37_Client 4,17.10.20 12:42:37,Client 4,2,3,3,5,45,23
+17.10.20 12:42:59_Client 6,17.10.20 12:42:59,Client 6,23,34,13,5,34,3
