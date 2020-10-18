@@ -3,11 +3,11 @@ const div = document.getElementById('javascript-header');
 
 function usernameToLocalStorage(){
     // register username in the localStorage
-    let textBox = document.getElementById('username');
-    let username = textBox.value;
+    const textBox = document.getElementById('username');
+    const username = textBox.value;
     localStorage.setItem('username',username)
     // Greet the new user
-    const header = `<h1> Hi ${username} </h1>`;
+    const header = `<h1> Hi, ${username} </h1>`;
     div.innerHTML = header;
 }
 
@@ -25,6 +25,6 @@ if (localStorage.length == 0){
 // if existing user, different greeting
 if (localStorage.length != 0){
     let username = localStorage.getItem('username');
-    const header = `<h1> Welcome back ${username} </h1>`;
+    const header = `<h1> Welcome back, ${username} </h1>`;
     div.innerHTML = header;
 }
