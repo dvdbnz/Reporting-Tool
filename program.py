@@ -32,6 +32,7 @@ class Shop:
         self.sony_oled = sony_oled
         self.sony_uhd = sony_uhd
         self.id = str(self.datetime) + '_' + client
+
     # Convert object as dict to add it to the csv
     def add_new_line_to_csv(self):
             fields_name = ['id', 'datetime', 'client','lg_oled', 'lg_uhd', 'ss_qled', 'ss_uhd', 'sony_oled', 'sony_uhd']
@@ -39,6 +40,7 @@ class Shop:
             with open('database.csv', 'a', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fields_name)
                     writer.writerow(list)
+
     # Delete the survey from the CSV when user clicks on button next to the survey in Homepage
     @staticmethod
     def delete_from_CSV(survey_to_remove):
@@ -114,7 +116,7 @@ def homepage():
                     survey_id = str(value)
                 if col_count == 2:
                     surveys += '<tr><td>' + value + '</td>'
-                if col_count == 3: #button to remove a survey
+                if col_count == 3: #button to remove a survey next to client's name
                     surveys += '<td>' + value + ' <button type="submit" name="survey-to-remove" value="' + survey_id + '">Remove</button></td>'
                 if col_count == len(column):
                     surveys += '<td>'+ value + '</td></tr>'
@@ -141,7 +143,9 @@ def survey():
 
     # Format a HTML dropdown selection for each clients from the database
     result = ''
-    clients_array.pop()
+    if clients_array[-1] =='': #Check if the last line is empty, and if yes, pop last value
+        clients_array.pop()
+
     for client in clients_array:
         result += '<option value="' + client + '">'+client+'</option>'
     dynamic_html = page.replace("$$$OPTIONS$$$", result)
@@ -184,13 +188,18 @@ def clients_management_page():
         # To add a client to the database
     if 'client-to-add' in request.form:
         client_to_add = request.form['client-to-add']
-        clients = read_clients_db()
-        if clients[-1] =='':
-            clients.pop()
-        clients.append(client_to_add)
-        clients.sort()
-        write_client_array_to_db(clients)
 
+        # prevent adding empty customer
+        if client_to_add != '':
+            clients = read_clients_db()
+            if clients[-1] =='':
+                clients.pop()
+            clients.append(client_to_add)
+            clients.sort()
+            write_client_array_to_db(clients)
+        else:
+            pass
+        
     # To remove a client from the database
     elif 'client-to-remove' in request.form:
         client_to_remove = request.form['client-to-remove']
