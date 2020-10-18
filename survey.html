@@ -7,6 +7,7 @@
 </head>
 <body>
 
+    <!-- top navigation bar -->
     <div class="topnav">
         <a class="" href="/">Home</a>
         <a class="active" href="/survey">Add a new survey</a>
@@ -18,11 +19,13 @@
         <h3>Please provide the informations here under</h3> <br>
 
         <form method='POST'>
+            <!-- Dropdown selection from clientsdb.txt to select client from de database -->
             <label for="client">Client's name: </label>
             <select name="client">
                 $$$OPTIONS$$$
             </select>
 
+            <!-- Survey -->
             <label for="lg-oled">LG OLED Tvs: </label>
             <input type="number" name="lg-oled" value = 0 min="0" max="50">
 
